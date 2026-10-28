@@ -14,7 +14,10 @@ int main()
         case 1: {
             int way;
             printf("\nВведите способ решения: 1) Динамичесим массивом 2) Статическим массивом: ");
-            if (scanf("%d", &way) != 1) return 1;
+            if (scanf("%d", &way) != 1) {
+                printf("\nНеправильный ввод");
+                return 1;
+            }
 
             switch (way) {
                 case 1: {
