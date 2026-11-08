@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 void randomize_dynamic_matrix(int**, int);
 void print_dynamic_matrix(int**, int);
@@ -12,97 +13,157 @@ void swap_row_and_col_static(int[][100], int);
 
 void analyze_string_characters(char*);
 
-
 int main()
 {
     srand(time(NULL)); // получает текущее время и задаёт его в кач-ве нач значения генератора rand()
 
-    int number_task;
-    printf("\nВведите номер задачи, которая будет решена(1 или 2): ");
-    if (scanf("%d", &number_task) != 1) {
-        printf("\nНеправильный ввод");
-        return 1;
-    }
+    while (1) {
 
-    switch (number_task) {
-        case 1: {
-            int way;
-            printf("\nВведите способ решения: 1) Динамичесим массивом 2) Статическим массивом: ");
-            if (scanf("%d", &way) != 1) {
+        printf("\n\nЗадача 1: Обмен i-й строки и j-го столбца в числовом двумерном массиве.\n");
+        printf("Задача 2: Сохранение текста и определение, каких символов в нем больше.\n");
+
+        int number_task;
+        printf("\nВведите номер задачи, которая будет решена (1 или 2): ");
+        if (scanf("%d", &number_task) != 1) {
+            printf("\nНеправильный ввод");
+            
+            int ch;
+            while ((ch = getchar()) != '\n' && ch != EOF);
+            continue;
+        }
+
+        switch (number_task) {
+            case 1: {
+                int way;
+                printf("\nВведите способ решения: 1) Динамичесим массивом 2) Статическим массивом: ");
+                if (scanf("%d", &way) != 1) {
+                    printf("\nНеправильный ввод");
+                    int clean_way;
+                    while ((clean_way = getchar()) != '\n' && clean_way != EOF);
+                    continue;
+                }
+
+                switch (way) {
+                    case 1: {
+                        // Для того, чтобы поменять i-ую строку и j-ый столбец местами, массив должен быть квадратным
+                        int rows;
+                        printf("\nВведите кол-во строк и столбцов квадратного массива: ");
+                        if (scanf("%d", &rows) != 1 || rows <= 0) {
+                            printf("\nНеправильный ввод");
+                            int clean_rows;
+                            while ((clean_rows = getchar()) != '\n' && clean_rows != EOF);
+                            continue;
+                        }
+
+                        int** arr = (int**)malloc(rows * sizeof(int*));
+                        if (arr == NULL) {
+                            printf("\nОшибка выделения памяти");
+                            return 1;
+                        }
+
+                        for (int i = 0; i < rows; i++) {
+                            *(arr + i) = (int*)malloc(rows * sizeof(int));
+
+                            if (*(arr + i) == NULL) {
+                                for (int j = 0; j < i; j++) free(*(arr + j));
+                                free(arr);
+                                printf("\nОшибка выделения памяти");
+                                return 1;
+                            }
+                        }
+
+                        randomize_dynamic_matrix(arr, rows);
+
+                        printf("\n Ваш изначальный массив: \n");
+                        print_dynamic_matrix(arr, rows);
+
+                        swap_row_and_col_dynamic(arr, rows);
+
+                        printf("\n Ваш массив после того, как в нём поменяли i-ую строку и j-ый столбец: \n");
+                        print_dynamic_matrix(arr, rows);
+
+                        for (int i = 0; i < rows; i++) free(*(arr + i));
+                        free(arr);
+                        break;
+                    }
+
+                    case 2: {
+                        int arr[100][100], rows;
+                        printf("\nВведите кол-во строк и столбцов квадратного массива: ");
+                        if (scanf("%d", &rows) != 1 || rows <= 0 || rows > 100) {
+                            printf("\nНеправильный ввод");
+                            int clean_rows;
+                            while ((clean_rows = getchar()) != '\n' && clean_rows != EOF);
+                            continue;
+                        }
+
+                        randomize_static_matrix(arr, rows);
+
+                        printf("\n Ваш изначальный массив: \n");
+                        print_static_matrix(arr, rows);
+
+                        swap_row_and_col_static(arr, rows);
+
+                        printf("\n Ваш массив после того, как в нём поменяли i-ую строку и j-ый столбец: \n");
+                        print_static_matrix(arr, rows);
+
+                        break;
+                    }
+
+                    default:
+                        printf("\nТакого способа решения нет");
+                        break;
+                }
+                break;
+            }
+
+            case 2: {
+                char str[1000];
+                int ch;
+                while ((ch = getchar()) != '\n' && ch != EOF);
+
+                printf("\nВведите текст: ");
+                if (fgets(str, sizeof(str), stdin) != NULL) {
+                    str[strcspn(str, "\n")] = '\0';
+
+                    if (str[0] == '\0') {
+                        printf("\nСтрока не может быть пустой!");
+                        return 1;
+                    }
+
+                    else analyze_string_characters(str);
+                }
+                break;
+            }
+
+            default:
+                printf("\nЗадачи с таким номером нет");
+                break;
+        }
+
+        int choice;
+        while (1) {
+            printf("\n\nХотите решить ещё одну задачу? 1 - Да ; 0 - Нет");
+            printf("\nВаш выбор: ");
+
+            if (scanf("%d", &choice) != 1) {
                 printf("\nНеправильный ввод");
-                return 1;
+                int clean_choice;
+                while ((clean_choice = getchar()) != '\n' && clean_choice != EOF);
+                continue;
             }
 
-            switch (way) {
-                case 1: {
-                    // Для того, чтобы поменять i-ую строку и j-ый столбец местами, массив должен быть квадратным
-                    int rows;
-                    printf("\nВведите кол-во строк и столбцов квадратного массива: ");
-                    if (scanf("%d", &rows) != 1 || rows <= 0) return 1;
+            int clean_end;
+            while ((clean_end = getchar()) != '\n' && clean_end != EOF);
 
-                    int** arr = (int**)malloc(rows * sizeof(int *));
-                    for (int i = 0; i < rows; i++) *(arr + i) = (int*)malloc(rows * sizeof(int));
-
-                    randomize_dynamic_matrix(arr, rows);
-
-                    printf("\n Ваш изначальный массив: \n");
-                    print_dynamic_matrix(arr, rows);
-
-                    swap_row_and_col_dynamic(arr, rows);
-
-                    printf("\n Ваш массив после того, как в нём поменяли i-ую строку и j-ый столбец: \n");
-                    print_dynamic_matrix(arr, rows);
-
-                    for (int i = 0; i < rows; i++) free(*(arr + i));
-                    free(arr);
-                    break;
-                }
-
-                case 2: {
-                    int arr[100][100], rows;
-                    printf("\nВведите кол-во строк и столбцов квадратного массива: ");
-                    if (scanf("%d", &rows) != 1 || rows <= 0) return 1;
-
-                    randomize_static_matrix(arr, rows);
-
-                    printf("\n Ваш изначальный массив: \n");
-                    print_static_matrix(arr, rows);
-
-                    swap_row_and_col_static(arr, rows);
-
-                    printf("\n Ваш массив после того, как в нём поменяли i-ую строку и j-ый столбец: \n");
-                    print_static_matrix(arr, rows);
-
-                    break;
-                }
-
-                default:
-                    printf("\nТакого способа решения нет");
-                    break;
-            }
-            break;
+            if (choice == 1 || choice == 0) break;
+            else printf("\nНеверный ввод");
         }
 
-        case 2: {
-            char str[1000];
-            while (getchar() != '\n');  // очистка буфера
-
-            printf("\nВведите текст: ");
-            gets_s(str, 1000);
-
-            if (str[0] == '\0') {
-                printf("\nСтрока не может быть пустой!");
-                return 1;
-            }
-
-            else analyze_string_characters(str);
-
+        if (choice == 0) {
+            printf("\nПрограмма завершена.\n");
             break;
         }
-        
-        default:
-            printf("\nЗадачи с таким номером нет");
-            break;
     }
 
     return 0;
@@ -145,19 +206,20 @@ void print_static_matrix(int arr[][100], int rows) {
 void swap_row_and_col_dynamic(int** arr, int rows) {
     int row_number, col_number;
     printf("\nВведите номер i-ой строки (от 1 до %d) и j-ого столбца (от 1 до %d), чтобы поменять их местами: ", rows, rows);
-    if (scanf("%d %d", &row_number, &col_number) != 2) return;
+    if (scanf("%d %d", &row_number, &col_number) != 2) {
+        printf("\nНекорректный ввод!");
+        return;
+    }
 
     if (row_number >= 1 && row_number <= rows && col_number >= 1 && col_number <= rows) {
         int r_index = row_number - 1, c_index = col_number - 1;
 
-        for (int p = 0, q = 0; p < rows && q < rows; p++, q++) { // p идёт по строке, q идёт по столбцу
-            if (p == c_index) p++;
-            if (q == r_index) q++;
-            if (p >= rows || q >= rows) break; // проверка на выход за границы
+        for (int i = 0; i < rows; i++) {
+            if (i == r_index && i == c_index) continue;
 
-            int tmp = *(*(arr + r_index) + p); // берём arr[r_index][p] - элемент из строки
-            *(*(arr + r_index) + p) = *(*(arr + q) + c_index); // записываем на его место arr[q][c_index] - элемент из столбца
-            *(*(arr + q) + c_index) = tmp; // в элемент из столбца записываем элемент из
+            int temp = *(*(arr + r_index) + i);
+            *(*(arr + r_index) + i) = *(*(arr + i) + c_index);
+            *(*(arr + i) + c_index) = temp;
         }
     }
 
@@ -172,14 +234,12 @@ void swap_row_and_col_static(int arr[][100], int rows) {
     if (row_number >= 1 && row_number <= rows && col_number >= 1 && col_number <= rows) {
         int r_index = row_number - 1, c_index = col_number - 1;
 
-        for (int p = 0, q = 0; p < rows && q < rows; p++, q++) { // p идёт по строке, q идёт по столбцу
-            if (p == c_index) p++;
-            if (q == r_index) q++;
-            if (p >= rows || q >= rows) break; // проверка на выход за границы
+        for (int i = 0; i < rows; i++) {
+            if (i == r_index && i == c_index) continue;
 
-            int tmp = *(*(arr + r_index) + p); // берём arr[r_index][p] - элемент из строки
-            *(*(arr + r_index) + p) = *(*(arr + q) + c_index); // записываем на его место arr[q][c_index] - элемент из столбца
-            *(*(arr + q) + c_index) = tmp; // в элемент из столбца записываем элемент из
+            int temp = *(*(arr + r_index) + i);
+            *(*(arr + r_index) + i) = *(*(arr + i) + c_index);
+            *(*(arr + i) + c_index) = temp;
         }
     }
 
@@ -188,7 +248,7 @@ void swap_row_and_col_static(int arr[][100], int rows) {
 
 void analyze_string_characters(char* str) {
     int digits = 0, letters = 0, others = 0;
-    for (int i = 0; str[i] != '\0' && str[i] != '\n'; i++) {
+    for (int i = 0; str[i] != '\0'; i++) {
         if (str[i] >= '0' && str[i] <= '9') digits++;
         else if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z')) letters++;
         else others++;
