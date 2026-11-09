@@ -30,8 +30,7 @@ int main()
             printf("\nНеправильный ввод");
 
             int ch;
-            while ((ch = getchar()) != '\n' && ch != EOF)
-                ;
+            while ((ch = getchar()) != '\n' && ch != EOF);
             continue;
         }
 
@@ -45,8 +44,7 @@ int main()
             {
                 printf("\nНеправильный ввод");
                 int clean_way;
-                while ((clean_way = getchar()) != '\n' && clean_way != EOF)
-                    ;
+                while ((clean_way = getchar()) != '\n' && clean_way != EOF);
                 continue;
             }
 
@@ -61,8 +59,7 @@ int main()
                 {
                     printf("\nНеправильный ввод");
                     int clean_rows;
-                    while ((clean_rows = getchar()) != '\n' && clean_rows != EOF)
-                        ;
+                    while ((clean_rows = getchar()) != '\n' && clean_rows != EOF);
                     continue;
                 }
 
@@ -112,8 +109,7 @@ int main()
                 {
                     printf("\nНеправильный ввод");
                     int clean_rows;
-                    while ((clean_rows = getchar()) != '\n' && clean_rows != EOF)
-                        ;
+                    while ((clean_rows = getchar()) != '\n' && clean_rows != EOF);
                     continue;
                 }
 
@@ -142,8 +138,7 @@ int main()
         {
             char str[1000];
             int ch;
-            while ((ch = getchar()) != '\n' && ch != EOF)
-                ;
+            while ((ch = getchar()) != '\n' && ch != EOF);
 
             printf("\nВведите текст: ");
             if (fgets(str, sizeof(str), stdin) != NULL)
@@ -177,14 +172,12 @@ int main()
             {
                 printf("\nНеправильный ввод");
                 int clean_choice;
-                while ((clean_choice = getchar()) != '\n' && clean_choice != EOF)
-                    ;
+                while ((clean_choice = getchar()) != '\n' && clean_choice != EOF);
                 continue;
             }
 
             int clean_end;
-            while ((clean_end = getchar()) != '\n' && clean_end != EOF)
-                ;
+            while ((clean_end = getchar()) != '\n' && clean_end != EOF);
 
             if (choice == 1 || choice == 0)
                 break;
@@ -256,8 +249,7 @@ int swap_row_and_col_dynamic(int **arr, int rows)
     {
         printf("\nНекорректный ввод!\n");
         int clean;
-        while ((clean = getchar()) != '\n' && clean != EOF)
-            ;
+        while ((clean = getchar()) != '\n' && clean != EOF);
         return 0;
     }
 
@@ -292,8 +284,7 @@ int swap_row_and_col_static(int arr[][100], int rows)
     {
         printf("\nНекорректный ввод!\n");
         int clean;
-        while ((clean = getchar()) != '\n' && clean != EOF)
-            ;
+        while ((clean = getchar()) != '\n' && clean != EOF);
         return 0;
     }
 
