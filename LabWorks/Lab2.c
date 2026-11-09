@@ -5,11 +5,11 @@
 
 void randomize_dynamic_matrix(int**, int);
 void print_dynamic_matrix(int**, int);
-void swap_row_and_col_dynamic(int**, int);
+int swap_row_and_col_dynamic(int**, int);
 
 void randomize_static_matrix(int[][100], int);
 void print_static_matrix(int[][100], int);
-void swap_row_and_col_static(int[][100], int);
+int swap_row_and_col_static(int[][100], int);
 
 void analyze_string_characters(char*);
 
@@ -77,10 +77,10 @@ int main()
                         printf("\n Ваш изначальный массив: \n");
                         print_dynamic_matrix(arr, rows);
 
-                        swap_row_and_col_dynamic(arr, rows);
-
-                        printf("\n Ваш массив после того, как в нём поменяли i-ую строку и j-ый столбец: \n");
-                        print_dynamic_matrix(arr, rows);
+                        if (swap_row_and_col_dynamic(arr, rows)) {
+                            printf("\n Ваш массив после того, как в нём поменяли i-ую строку и j-ый столбец: \n");
+                            print_dynamic_matrix(arr, rows);
+                        }
 
                         for (int i = 0; i < rows; i++) free(*(arr + i));
                         free(arr);
@@ -102,10 +102,10 @@ int main()
                         printf("\n Ваш изначальный массив: \n");
                         print_static_matrix(arr, rows);
 
-                        swap_row_and_col_static(arr, rows);
-
-                        printf("\n Ваш массив после того, как в нём поменяли i-ую строку и j-ый столбец: \n");
-                        print_static_matrix(arr, rows);
+                        if (swap_row_and_col_static(arr, rows)) {
+                            printf("\n Ваш массив после того, как в нём поменяли i-ую строку и j-ый столбец: \n");
+                            print_static_matrix(arr, rows);
+                        }
 
                         break;
                     }
@@ -203,12 +203,14 @@ void print_static_matrix(int arr[][100], int rows) {
     }
 }
 
-void swap_row_and_col_dynamic(int** arr, int rows) {
+int swap_row_and_col_dynamic(int** arr, int rows) {
     int row_number, col_number;
     printf("\nВведите номер i-ой строки (от 1 до %d) и j-ого столбца (от 1 до %d), чтобы поменять их местами: ", rows, rows);
     if (scanf("%d %d", &row_number, &col_number) != 2) {
-        printf("\nНекорректный ввод!");
-        return;
+        printf("\nНекорректный ввод!\n");
+        int clean;
+        while ((clean = getchar()) != '\n' && clean != EOF);
+        return 0;
     }
 
     if (row_number >= 1 && row_number <= rows && col_number >= 1 && col_number <= rows) {
@@ -221,15 +223,23 @@ void swap_row_and_col_dynamic(int** arr, int rows) {
             *(*(arr + r_index) + i) = *(*(arr + i) + c_index);
             *(*(arr + i) + c_index) = temp;
         }
+        return 1;
     }
 
-    else printf("\nНекорректный номер строки или столбца!\n");
+    else {
+        printf("\nНекорректный номер строки или столбца!\n");
+    }
 }
 
-void swap_row_and_col_static(int arr[][100], int rows) {
+int swap_row_and_col_static(int arr[][100], int rows) {
     int row_number, col_number;
     printf("\nВведите номер i-ой строки (от 1 до %d) и j-ого столбца (от 1 до %d), чтобы поменять их местами: ", rows, rows);
-    if (scanf("%d %d", &row_number, &col_number) != 2) return;
+    if (scanf("%d %d", &row_number, &col_number) != 2) {
+        printf("\nНекорректный ввод!\n");
+        int clean;
+        while ((clean = getchar()) != '\n' && clean != EOF);
+        return 0;
+    }
 
     if (row_number >= 1 && row_number <= rows && col_number >= 1 && col_number <= rows) {
         int r_index = row_number - 1, c_index = col_number - 1;
@@ -241,9 +251,12 @@ void swap_row_and_col_static(int arr[][100], int rows) {
             *(*(arr + r_index) + i) = *(*(arr + i) + c_index);
             *(*(arr + i) + c_index) = temp;
         }
+        return 1;
     }
 
-    else printf("\nНекорректный номер строки или столбца!\n");
+    else {
+        printf("\nНекорректный номер строки или столбца!\n");
+    }
 }
 
 void analyze_string_characters(char* str) {
