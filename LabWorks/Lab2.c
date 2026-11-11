@@ -13,13 +13,14 @@ int swap_row_and_col_static(int[][100], int);
 
 void analyze_string_characters(char *);
 
+void clear_input_buffer();
+
 int main()
 {
     srand(time(NULL)); // получает текущее время и задаёт его в кач-ве нач значения генератора rand()
 
     while (1)
     {
-
         printf("\n\nЗадача 1: Обмен i-й строки и j-го столбца в числовом двумерном массиве.\n");
         printf("Задача 2: Сохранение текста и определение, каких символов в нем больше.\n");
 
@@ -29,8 +30,7 @@ int main()
         {
             printf("\nНеправильный ввод");
 
-            int ch;
-            while ((ch = getchar()) != '\n' && ch != EOF);
+            clear_input_buffer();
             continue;
         }
 
@@ -43,8 +43,7 @@ int main()
             if (scanf("%d", &way) != 1)
             {
                 printf("\nНеправильный ввод");
-                int clean_way;
-                while ((clean_way = getchar()) != '\n' && clean_way != EOF);
+                clear_input_buffer();
                 continue;
             }
 
@@ -58,12 +57,12 @@ int main()
                 if (scanf("%d", &rows) != 1 || rows <= 0)
                 {
                     printf("\nНеправильный ввод");
-                    int clean_rows;
-                    while ((clean_rows = getchar()) != '\n' && clean_rows != EOF);
+                    clear_input_buffer();
                     continue;
                 }
 
                 int **arr = (int **)malloc(rows * sizeof(int *));
+
                 if (arr == NULL)
                 {
                     printf("\nОшибка выделения памяти");
@@ -108,8 +107,7 @@ int main()
                 if (scanf("%d", &rows) != 1 || rows <= 0 || rows > 100)
                 {
                     printf("\nНеправильный ввод");
-                    int clean_rows;
-                    while ((clean_rows = getchar()) != '\n' && clean_rows != EOF);
+                    clear_input_buffer();
                     continue;
                 }
 
@@ -137,8 +135,7 @@ int main()
         case 2:
         {
             char str[1000];
-            int ch;
-            while ((ch = getchar()) != '\n' && ch != EOF);
+            clear_input_buffer();
 
             printf("\nВведите текст: ");
             if (fgets(str, sizeof(str), stdin) != NULL)
@@ -171,13 +168,11 @@ int main()
             if (scanf("%d", &choice) != 1)
             {
                 printf("\nНеправильный ввод");
-                int clean_choice;
-                while ((clean_choice = getchar()) != '\n' && clean_choice != EOF);
+                clear_input_buffer();
                 continue;
             }
 
-            int clean_end;
-            while ((clean_end = getchar()) != '\n' && clean_end != EOF);
+            clear_input_buffer();
 
             if (choice == 1 || choice == 0)
                 break;
@@ -248,8 +243,7 @@ int swap_row_and_col_dynamic(int **arr, int rows)
     if (scanf("%d %d", &row_number, &col_number) != 2)
     {
         printf("\nНекорректный ввод!\n");
-        int clean;
-        while ((clean = getchar()) != '\n' && clean != EOF);
+        clear_input_buffer();
         return 0;
     }
 
@@ -283,8 +277,7 @@ int swap_row_and_col_static(int arr[][100], int rows)
     if (scanf("%d %d", &row_number, &col_number) != 2)
     {
         printf("\nНекорректный ввод!\n");
-        int clean;
-        while ((clean = getchar()) != '\n' && clean != EOF);
+        clear_input_buffer();
         return 0;
     }
 
@@ -332,4 +325,10 @@ void analyze_string_characters(char *str)
         printf("\nДругих символов в введённом тексте больше");
     else
         printf("\nКоличество нескольких категорий символов в введённом тексте равно");
+}
+
+void clear_input_buffer()
+{
+    int ch;
+    while ((ch = getchar()) != '\n' && ch != EOF);
 }
