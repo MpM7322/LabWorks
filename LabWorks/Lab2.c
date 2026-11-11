@@ -2,14 +2,16 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#define MAX 100
+#define MAX_STR 1000
 
 void randomize_dynamic_matrix(int **, int);
 void print_dynamic_matrix(int **, int);
 int swap_row_and_col_dynamic(int **, int);
 
-void randomize_static_matrix(int[][100], int);
-void print_static_matrix(int[][100], int);
-int swap_row_and_col_static(int[][100], int);
+void randomize_static_matrix(int[][MAX], int);
+void print_static_matrix(int[][MAX], int);
+int swap_row_and_col_static(int[][MAX], int);
 
 void analyze_string_characters(char *);
 
@@ -102,9 +104,9 @@ int main()
 
             case 2:
             {
-                int arr[100][100], rows;
+                int arr[MAX][MAX], rows;
                 printf("\nВведите кол-во строк и столбцов квадратного массива: ");
-                if (scanf("%d", &rows) != 1 || rows <= 0 || rows > 100)
+                if (scanf("%d", &rows) != 1 || rows <= 0 || rows > MAX)
                 {
                     printf("\nНеправильный ввод");
                     clear_input_buffer();
@@ -134,7 +136,7 @@ int main()
 
         case 2:
         {
-            char str[1000];
+            char str[MAX_STR];
             clear_input_buffer();
 
             printf("\nВведите текст: ");
@@ -145,7 +147,7 @@ int main()
                 if (str[0] == '\0')
                 {
                     printf("\nСтрока не может быть пустой!");
-                    return 1;
+                    break;
                 }
 
                 else
@@ -201,7 +203,7 @@ void randomize_dynamic_matrix(int **arr, int rows)
     }
 }
 
-void randomize_static_matrix(int arr[][100], int rows)
+void randomize_static_matrix(int arr[][MAX], int rows)
 {
     for (int i = 0; i < rows; i++)
     {
@@ -224,7 +226,7 @@ void print_dynamic_matrix(int **arr, int rows)
     }
 }
 
-void print_static_matrix(int arr[][100], int rows)
+void print_static_matrix(int arr[][MAX], int rows)
 {
     for (int i = 0; i < rows; i++)
     {
@@ -270,7 +272,7 @@ int swap_row_and_col_dynamic(int **arr, int rows)
     }
 }
 
-int swap_row_and_col_static(int arr[][100], int rows)
+int swap_row_and_col_static(int arr[][MAX], int rows)
 {
     int row_number, col_number;
     printf("\nВведите номер i-ой строки (от 1 до %d) и j-ого столбца (от 1 до %d), чтобы поменять их местами: ", rows, rows);
